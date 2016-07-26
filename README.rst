@@ -12,9 +12,9 @@ You will need to have `FlexGet`_ virtualenv active when executing any of these c
 Install
 -------
 
-TBD, this may work
+TBD, this will likely work after FlexGet 2.2 is released::
 
-    pip install http://github.com/Flexget/extra/archive/master.zip
+    pip install https://github.com/Flexget/extras/archive/master.zip
 
 
 Development
