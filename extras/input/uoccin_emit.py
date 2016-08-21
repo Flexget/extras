@@ -9,7 +9,7 @@ from flexget.event import event
 from flexget.utils import json
 
 try:
-    from flexget.plugins.api_tvdb import lookup_series
+    from flexget.plugins.internal.api_tvdb import lookup_series
 except ImportError:
     raise plugin.DependencyError(issued_by='uoccin', missing='api_tvdb',
                                  message='uoccin requires the `api_tvdb` plugin')
@@ -29,7 +29,8 @@ def load_uoccin_data(path):
     return udata
 
 
-class FromUoccin(object):
+class UoccinEmit(object):
+
     schema = {
         'type': 'object',
         'properties': {
@@ -47,8 +48,8 @@ class FromUoccin(object):
         """Creates an entry for each item in your uoccin watchlist.
 
         Example::
-
-            from_uoccin:
+            
+            uoccin_emit:
               path: /path/to/gdrive/uoccin
               type: series
               tags: [ 'favorite', 'hires' ]
@@ -98,7 +99,7 @@ class FromUoccin(object):
             else:
                 sname = itm['name']
                 try:
-                    sname = lookup_series(tvdb_id=eid).seriesname
+                    sname = lookup_series(tvdb_id=eid).name
                 except LookupError:
                     self.log.warning('Unable to lookup series %s from tvdb, using raw name.' % eid)
                 surl = 'http://thetvdb.com/?tab=series&id=' + eid
@@ -143,4 +144,4 @@ class FromUoccin(object):
 
 @event('plugin.register')
 def register_plugin():
-    plugin.register(FromUoccin, 'from_uoccin', api_ver=2)
+    plugin.register(UoccinEmit, 'uoccin_emit', api_ver=2)
